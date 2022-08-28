@@ -1,35 +1,6 @@
 <?php
-//============================================================+
-// File name   : example_001.php
-// Begin       : 2008-03-04
-// Last Update : 2013-05-14
-//
-// Description : Example 001 for TCPDF class
-//               Default Header and Footer
-//
-// Author: Nicola Asuni
-//
-// (c) Copyright:
-//               Nicola Asuni
-//               Tecnick.com LTD
-//               www.tecnick.com
-//               info@tecnick.com
-//============================================================+
 
-/**
- * Creates an example PDF TEST document using TCPDF
- * @package com.tecnick.tcpdf
- * @abstract TCPDF - Example: Default Header and Footer
- * @author Nicola Asuni
- * @since 2008-03-04
- */
-
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
-// Include the main TCPDF library (search for installation path).
-require_once('vendor/autoload.php');
-
+// Get Member Details
 $entity = [];
 
 foreach($_SESSION['members'] as $member) {
@@ -42,17 +13,15 @@ foreach($_SESSION['members'] as $member) {
 }
 
 
-// create new PDF document
+// Create New PDF Document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-// set document information
+// Set Document Information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Nicola Asuni');
-$pdf->SetTitle('TCPDF Example 001');
-$pdf->SetSubject('TCPDF Tutorial');
-$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+$pdf->SetAuthor('New Mayapur');
+$pdf->SetTitle('');
 
-// remove default header/footer
+// Remove Default Header/Footer
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
 
@@ -78,20 +47,13 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 
 // ---------------------------------------------------------
 
-// set default font subsetting mode
 $pdf->setFontSubsetting(true);
-
-// Set font
-// dejavusans is a UTF-8 Unicode font, if you only need to
-// print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
 $pdf->SetFont('dejavusans', '', 14, '', true);
 
 // Add a page
-// This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
 
-// Set some content to print
+// Set Content to Print
 $html = <<<EOD
 <table>
     <thead>
@@ -133,18 +95,4 @@ $pdf->writeHTMLCell(140, 50, '', '', $html, 0, 1, 0, true, '', true);
 
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
-$pdf->Output('example_001.pdf', 'I');
-
-//============================================================+
-// END OF FILE
-//============================================================+
-
-$html1 = <<<EOD
-<div style="background-color: #F5E8C7; border: 12px solid #F5E8C7">
-<h1><span style="text-decoration:none;background-color:#ECCCB2;color:black;">&nbsp;<span style="color:black;">Membership</span><span style="color:black;"> Card</span>&nbsp;</span></h1>
-<p>Association  ARGM, RNA W362002611</p>
-<p><b>Name:</b> {$entity['name']}</p>
-<p><b>Membership Number:</b> {$entity['id']}</p>
-<p><b>Monthly Donation:</b> {$entity['currency']} {$entity['amount']}</p>
-</div>
-EOD;
+$pdf->Output($entity['name'] . '_Card');
