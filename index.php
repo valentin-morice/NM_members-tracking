@@ -12,4 +12,10 @@ $klein->respond('POST', '/members/card', function ($request, $response, $service
    $service->render('views/tcpdf.php');
 });
 
+$klein->respond('GET', '/members/[i:id]', function ($request, $response, $service) {
+   $service->render('views/profile.php', array(
+      'id' => $request->id, 
+   ));
+});
+
 $klein->dispatch();
