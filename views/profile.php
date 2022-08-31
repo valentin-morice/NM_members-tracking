@@ -1,10 +1,18 @@
 <?php
 
+require __DIR__.'/../config.php';
+
 $this->render('views/partials/header.php');
 
 ?>
 
 <?php
+
+// Call GiveWP API, Donations From Last Month
+$startdate = date('Ymd', strtotime("-1 months"));
+$api_url_donations = "http://donations.newmayapur.com/give-api/donations/?key=" . $key . "&token=" . $token . "&startdate=" . $startdate . "&number=-1";
+$json_data_d = file_get_contents($api_url_donations);
+$response_data_d = json_decode($json_data_d, true);
 
 $entity = [];
 
@@ -31,7 +39,7 @@ foreach($_SESSION['members'] as $member) {
 
 $last_donation = [];
 
-foreach($_SESSION['donations'] as $donation) {
+foreach($response_data_d['donations'] as $donation) {
     if ($entity['donor_id'] == $donation['payment_meta']['_give_payment_donor_id'] && $entity['recurring'] == $donation['total']) {
         $last_donation['status'] = $donation['status'];
         $last_donation['date'] = $donation['date'];
